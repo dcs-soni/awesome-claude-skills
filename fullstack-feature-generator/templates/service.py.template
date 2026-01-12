@@ -1,0 +1,52 @@
+# src/services/{{snake_case}}_service.py
+from sqlalchemy.orm import Session
+from sqlalchemy import desc
+from typing import Optional, List
+
+from src.models.{{snake_case}} import {{PascalCase}}
+from src.schemas.{{snake_case}} import {{PascalCase}}Create, {{PascalCase}}Update
+
+
+class {{PascalCase}}Service:
+    def __init__(self, db: Session):
+        self.db = db
+
+    def list(self, skip: int = 0, limit: int = 20) -> List[{{PascalCase}}]:
+        return (
+            self.db.query({{PascalCase}})
+            .order_by(desc({{PascalCase}}.created_at))
+            .offset(skip)
+            .limit(limit)
+            .all()
+        )
+
+    def get_by_id(self, id: str) -> Optional[{{PascalCase}}]:
+        return self.db.query({{PascalCase}}).filter({{PascalCase}}.id == id).first()
+
+    def create(self, data: {{PascalCase}}Create) -> {{PascalCase}}:
+        item = {{PascalCase}}(**data.model_dump())
+        self.db.add(item)
+        self.db.commit()
+        self.db.refresh(item)
+        return item
+
+    def update(self, id: str, data: {{PascalCase}}Update) -> Optional[{{PascalCase}}]:
+        item = self.get_by_id(id)
+        if not item:
+            return None
+        
+        for key, value in data.model_dump(exclude_unset=True).items():
+            setattr(item, key, value)
+        
+        self.db.commit()
+        self.db.refresh(item)
+        return item
+
+    def delete(self, id: str) -> bool:
+        item = self.get_by_id(id)
+        if not item:
+            return False
+        
+        self.db.delete(item)
+        self.db.commit()
+        return True

@@ -1,0 +1,67 @@
+# src/routes/{{snake_case}}.py
+from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy.orm import Session
+from typing import List
+
+from src.schemas.{{snake_case}} import (
+    {{PascalCase}}Create,
+    {{PascalCase}}Update,
+    {{PascalCase}}Response,
+)
+from src.services.{{snake_case}}_service import {{PascalCase}}Service
+from src.db.session import get_db
+
+router = APIRouter(prefix="/{{kebab-case-plural}}", tags=["{{PascalCase}}"])
+
+
+@router.get("/", response_model=List[{{PascalCase}}Response])
+async def list_{{snake_case_plural}}(
+    page: int = Query(1, ge=1),
+    limit: int = Query(20, ge=1, le=100),
+    db: Session = Depends(get_db),
+):
+    """List all {{snake_case_plural}} with pagination."""
+    service = {{PascalCase}}Service(db)
+    return service.list(skip=(page - 1) * limit, limit=limit)
+
+
+@router.get("/{id}", response_model={{PascalCase}}Response)
+async def get_{{snake_case}}(id: str, db: Session = Depends(get_db)):
+    """Get a single {{snake_case}} by ID."""
+    service = {{PascalCase}}Service(db)
+    item = service.get_by_id(id)
+    if not item:
+        raise HTTPException(status_code=404, detail="{{PascalCase}} not found")
+    return item
+
+
+@router.post("/", response_model={{PascalCase}}Response, status_code=201)
+async def create_{{snake_case}}(
+    data: {{PascalCase}}Create,
+    db: Session = Depends(get_db),
+):
+    """Create a new {{snake_case}}."""
+    service = {{PascalCase}}Service(db)
+    return service.create(data)
+
+
+@router.put("/{id}", response_model={{PascalCase}}Response)
+async def update_{{snake_case}}(
+    id: str,
+    data: {{PascalCase}}Update,
+    db: Session = Depends(get_db),
+):
+    """Update an existing {{snake_case}}."""
+    service = {{PascalCase}}Service(db)
+    item = service.update(id, data)
+    if not item:
+        raise HTTPException(status_code=404, detail="{{PascalCase}} not found")
+    return item
+
+
+@router.delete("/{id}", status_code=204)
+async def delete_{{snake_case}}(id: str, db: Session = Depends(get_db)):
+    """Delete a {{snake_case}}."""
+    service = {{PascalCase}}Service(db)
+    if not service.delete(id):
+        raise HTTPException(status_code=404, detail="{{PascalCase}} not found")

@@ -1,0 +1,33 @@
+// src/services/{{kebab-case}}.service.ts
+import { db } from '../db';
+import type { Create{{PascalCase}}Input, Update{{PascalCase}}Input } from '../schemas/{{kebab-case}}.schema';
+
+export class {{PascalCase}}Service {
+  async list(options: { limit?: number; offset?: number } = {}) {
+    const { limit = 20, offset = 0 } = options;
+    return db.{{camelCase}}.findMany({
+      take: limit,
+      skip: offset,
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async getById(id: string) {
+    return db.{{camelCase}}.findUnique({ where: { id } });
+  }
+
+  async create(data: Create{{PascalCase}}Input) {
+    return db.{{camelCase}}.create({ data });
+  }
+
+  async update(id: string, data: Update{{PascalCase}}Input) {
+    return db.{{camelCase}}.update({
+      where: { id },
+      data,
+    });
+  }
+
+  async delete(id: string) {
+    return db.{{camelCase}}.delete({ where: { id } });
+  }
+}

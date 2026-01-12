@@ -1,0 +1,16 @@
+// src/routes/{{kebab-case}}.routes.ts
+import { Router } from 'express';
+import { {{PascalCase}}Controller } from '../controllers/{{kebab-case}}.controller';
+import { validateRequest } from '../middleware/validate';
+import { create{{PascalCase}}Schema, update{{PascalCase}}Schema } from '../schemas/{{kebab-case}}.schema';
+
+const router = Router();
+const controller = new {{PascalCase}}Controller();
+
+router.get('/', controller.list);
+router.get('/:id', controller.getById);
+router.post('/', validateRequest(create{{PascalCase}}Schema), controller.create);
+router.put('/:id', validateRequest(update{{PascalCase}}Schema), controller.update);
+router.delete('/:id', controller.delete);
+
+export default router;

@@ -1,0 +1,20 @@
+// src/schemas/{{kebab-case}}.schema.ts
+import { z } from 'zod';
+
+export const create{{PascalCase}}Schema = z.object({
+  body: z.object({
+    {{#fields}}
+    {{camelCase}}: {{zodType}}{{#optional}}.optional(){{/optional}},
+    {{/fields}}
+  }),
+});
+
+export const update{{PascalCase}}Schema = z.object({
+  body: create{{PascalCase}}Schema.shape.body.partial(),
+  params: z.object({
+    id: z.string(),
+  }),
+});
+
+export type Create{{PascalCase}}Input = z.infer<typeof create{{PascalCase}}Schema>['body'];
+export type Update{{PascalCase}}Input = z.infer<typeof update{{PascalCase}}Schema>['body'];

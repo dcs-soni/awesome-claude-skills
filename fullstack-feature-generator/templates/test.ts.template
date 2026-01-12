@@ -1,0 +1,92 @@
+// tests/{{kebab-case}}.test.ts
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import request from 'supertest';
+import { app } from '../src/app';
+import { db } from '../src/db';
+
+describe('{{PascalCase}} API', () => {
+  afterEach(async () => {
+    // Clean up test data
+  });
+
+  describe('GET /api/{{kebab-case-plural}}', () => {
+    it('should return list', async () => {
+      const response = await request(app)
+        .get('/api/{{kebab-case-plural}}')
+        .expect(200);
+
+      expect(Array.isArray(response.body)).toBe(true);
+    });
+  });
+
+  describe('POST /api/{{kebab-case-plural}}', () => {
+    it('should create new {{camelCase}}', async () => {
+      const response = await request(app)
+        .post('/api/{{kebab-case-plural}}')
+        .send({
+          {{#fields}}
+          {{camelCase}}: {{testValue}},
+          {{/fields}}
+        })
+        .expect(201);
+
+      expect(response.body).toHaveProperty('id');
+    });
+
+    it('should return 400 for invalid data', async () => {
+      await request(app)
+        .post('/api/{{kebab-case-plural}}')
+        .send({})
+        .expect(400);
+    });
+  });
+
+  describe('GET /api/{{kebab-case-plural}}/:id', () => {
+    it('should return 404 for non-existent', async () => {
+      await request(app)
+        .get('/api/{{kebab-case-plural}}/non-existent-id')
+        .expect(404);
+    });
+  });
+
+  describe('PUT /api/{{kebab-case-plural}}/:id', () => {
+    it('should update existing {{camelCase}}', async () => {
+      // Create first
+      const created = await request(app)
+        .post('/api/{{kebab-case-plural}}')
+        .send({
+          {{#fields}}
+          {{camelCase}}: {{testValue}},
+          {{/fields}}
+        });
+
+      const response = await request(app)
+        .put(`/api/{{kebab-case-plural}}/${created.body.id}`)
+        .send({
+          {{#fields}}
+          {{camelCase}}: {{updatedTestValue}},
+          {{/fields}}
+        })
+        .expect(200);
+
+      expect(response.body.id).toBe(created.body.id);
+    });
+  });
+
+  describe('DELETE /api/{{kebab-case-plural}}/:id', () => {
+    it('should delete existing {{camelCase}}', async () => {
+      // Create first
+      const created = await request(app)
+        .post('/api/{{kebab-case-plural}}')
+        .send({
+          {{#fields}}
+          {{camelCase}}: {{testValue}},
+          {{/fields}}
+        });
+
+      await request(app)
+        .delete(`/api/{{kebab-case-plural}}/${created.body.id}`)
+        .expect(204);
+    });
+  });
+});

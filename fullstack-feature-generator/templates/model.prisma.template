@@ -1,0 +1,11 @@
+model {{PascalCase}} {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  {{#fields}}
+  {{camelCase}} {{prismaType}}{{#optional}}?{{/optional}}
+  {{/fields}}
+
+  @@map("{{snake_case_plural}}")
+}
