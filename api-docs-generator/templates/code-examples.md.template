@@ -1,0 +1,103 @@
+## {{ENDPOINT_SUMMARY}}
+
+### cURL
+
+```bash
+curl -X {{METHOD}} '{{BASE_URL}}{{PATH}}{{#hasQueryParams}}?{{queryString}}{{/hasQueryParams}}' \
+  -H 'Authorization: Bearer <token>' \
+  -H 'Content-Type: application/json'{{#hasRequestBody}} \
+  -d '{{requestBodyJson}}'{{/hasRequestBody}}
+```
+
+### JavaScript (fetch)
+
+```javascript
+const response = await fetch('{{BASE_URL}}{{PATH}}{{#hasQueryParams}}?{{queryString}}{{/hasQueryParams}}', {
+  method: '{{METHOD}}',
+  headers: {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json',
+  },{{#hasRequestBody}}
+  body: JSON.stringify({{requestBodyObject}}),{{/hasRequestBody}}
+});
+
+const data = await response.json();
+console.log(data);
+```
+
+### JavaScript (axios)
+
+```javascript
+const { data } = await axios.{{methodLower}}('{{BASE_URL}}{{PATH}}'{{#hasRequestBody}}, {{requestBodyObject}}{{/hasRequestBody}}, {
+  headers: {
+    'Authorization': `Bearer ${token}`,
+  },{{#hasQueryParams}}
+  params: {{queryParamsObject}},{{/hasQueryParams}}
+});
+
+console.log(data);
+```
+
+### Python (requests)
+
+```python
+import requests
+
+response = requests.{{methodLower}}(
+    '{{BASE_URL}}{{PATH}}',
+    headers={
+        'Authorization': f'Bearer {token}',
+        'Content-Type': 'application/json',
+    },{{#hasRequestBody}}
+    json={{requestBodyPython}},{{/hasRequestBody}}{{#hasQueryParams}}
+    params={{queryParamsPython}},{{/hasQueryParams}}
+)
+
+data = response.json()
+print(data)
+```
+
+### Python (httpx - async)
+
+```python
+import httpx
+
+async with httpx.AsyncClient() as client:
+    response = await client.{{methodLower}}(
+        '{{BASE_URL}}{{PATH}}',
+        headers={'Authorization': f'Bearer {token}'},{{#hasRequestBody}}
+        json={{requestBodyPython}},{{/hasRequestBody}}{{#hasQueryParams}}
+        params={{queryParamsPython}},{{/hasQueryParams}}
+    )
+    data = response.json()
+    print(data)
+```
+
+### Go
+
+```go
+package main
+
+import (
+    "bytes"
+    "encoding/json"
+    "net/http"
+)
+
+func main() {
+    {{#hasRequestBody}}
+    body := map[string]interface{}{
+        {{requestBodyGo}}
+    }
+    jsonBody, _ := json.Marshal(body)
+    {{/hasRequestBody}}
+    
+    req, _ := http.NewRequest("{{METHOD}}", "{{BASE_URL}}{{PATH}}", {{#hasRequestBody}}bytes.NewBuffer(jsonBody){{/hasRequestBody}}{{^hasRequestBody}}nil{{/hasRequestBody}})
+    req.Header.Set("Authorization", "Bearer "+token)
+    req.Header.Set("Content-Type", "application/json")
+    
+    client := &http.Client{}
+    resp, _ := client.Do(req)
+    defer resp.Body.Close()
+}
+```

@@ -1,0 +1,162 @@
+# {{API_TITLE}}
+
+{{API_DESCRIPTION}}
+
+**Version:** {{API_VERSION}}
+
+---
+
+## Base URL
+
+| Environment | URL |
+|-------------|-----|
+| Development | `{{DEV_SERVER_URL}}` |
+| Production | `{{PROD_SERVER_URL}}` |
+
+---
+
+## Authentication
+
+{{#hasBearerAuth}}
+### Bearer Token
+
+Include the JWT token in the Authorization header:
+
+```
+Authorization: Bearer <token>
+```
+{{/hasBearerAuth}}
+
+{{#hasApiKey}}
+### API Key
+
+Include your API key in the request header:
+
+```
+X-API-Key: <your-api-key>
+```
+{{/hasApiKey}}
+
+---
+
+## Endpoints
+
+{{#tags}}
+### {{name}}
+
+{{description}}
+
+{{#endpoints}}
+#### {{summary}}
+
+```
+{{method}} {{path}}
+```
+
+{{#description}}
+{{description}}
+{{/description}}
+
+{{#requiresAuth}}
+🔒 **Authentication required**
+{{/requiresAuth}}
+
+{{#hasPathParams}}
+**Path Parameters:**
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+{{#pathParams}}
+| `{{name}}` | {{type}} | {{#required}}Yes{{/required}}{{^required}}No{{/required}} | {{description}} |
+{{/pathParams}}
+{{/hasPathParams}}
+
+{{#hasQueryParams}}
+**Query Parameters:**
+
+| Name | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+{{#queryParams}}
+| `{{name}}` | {{type}} | {{#required}}Yes{{/required}}{{^required}}No{{/required}} | {{default}} | {{description}} |
+{{/queryParams}}
+{{/hasQueryParams}}
+
+{{#hasRequestBody}}
+**Request Body:**
+
+```json
+{{requestExample}}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+{{#requestFields}}
+| `{{name}}` | {{type}} | {{#required}}Yes{{/required}}{{^required}}No{{/required}} | {{description}} |
+{{/requestFields}}
+{{/hasRequestBody}}
+
+**Response:** `{{successCode}} {{successStatus}}`
+
+```json
+{{responseExample}}
+```
+
+{{#hasErrors}}
+**Errors:**
+
+| Status | Description |
+|--------|-------------|
+{{#errors}}
+| {{code}} | {{description}} |
+{{/errors}}
+{{/hasErrors}}
+
+---
+
+{{/endpoints}}
+{{/tags}}
+
+## Error Format
+
+All errors follow this structure:
+
+```json
+{
+  "status": 400,
+  "code": "VALIDATION_ERROR",
+  "message": "Invalid input data",
+  "details": {
+    "field": ["Error message"]
+  }
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `status` | integer | HTTP status code |
+| `code` | string | Error code |
+| `message` | string | Human-readable message |
+| `details` | object | Field-specific errors (optional) |
+
+---
+
+## Rate Limiting
+
+{{#hasRateLimiting}}
+Rate limits apply to all endpoints:
+
+- **Rate:** {{rateLimit}} requests per {{ratePeriod}}
+- **Headers:**
+  - `X-RateLimit-Limit`: Maximum requests allowed
+  - `X-RateLimit-Remaining`: Requests remaining
+  - `X-RateLimit-Reset`: Unix timestamp when limit resets
+
+When exceeded, returns `429 Too Many Requests`.
+{{/hasRateLimiting}}
+{{^hasRateLimiting}}
+No rate limiting is currently applied.
+{{/hasRateLimiting}}
+
+---
+
+*Documentation generated automatically*

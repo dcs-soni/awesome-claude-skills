@@ -1,0 +1,86 @@
+{
+  "info": {
+    "name": "{{API_TITLE}}",
+    "description": "{{API_DESCRIPTION}}",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "{{DEV_SERVER_URL}}"
+    },
+    {
+      "key": "token",
+      "value": "<your-jwt-token>"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {{#tags}}
+    {
+      "name": "{{name}}",
+      "description": "{{description}}",
+      "item": [
+        {{#endpoints}}
+        {
+          "name": "{{summary}}",
+          "request": {
+            "method": "{{METHOD}}",
+            "url": {
+              "raw": "{{baseUrl}}{{path}}",
+              "host": ["{{baseUrl}}"],
+              "path": [{{#pathSegments}}"{{.}}"{{^last}},{{/last}}{{/pathSegments}}]
+              {{#hasQueryParams}},
+              "query": [
+                {{#queryParams}}
+                {
+                  "key": "{{name}}",
+                  "value": "{{defaultValue}}",
+                  "description": "{{description}}"
+                }{{^last}},{{/last}}
+                {{/queryParams}}
+              ]
+              {{/hasQueryParams}}
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+            {{#hasRequestBody}},
+            "body": {
+              "mode": "raw",
+              "raw": "{{requestBodyJson}}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+            {{/hasRequestBody}}
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "{{successStatus}}",
+              "code": {{successCode}},
+              "body": "{{responseBodyJson}}"
+            }
+          ]
+        }{{^last}},{{/last}}
+        {{/endpoints}}
+      ]
+    }{{^last}},{{/last}}
+    {{/tags}}
+  ]
+}
