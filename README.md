@@ -11,6 +11,7 @@ A curated collection of custom [Claude Code Skills](https://docs.anthropic.com/e
 | [fullstack-feature-generator](./fullstack-feature-generator) | Generate complete full-stack features with DB, API, and UI         |
 | [incident-response-helper](./incident-response-helper)       | Accelerate production incident response with log analysis          |
 | [stale-todo-finder](./stale-todo-finder)                     | Find and analyze forgotten TODO/FIXME comments using git history   |
+| [empty-catch-finder](./empty-catch-finder)                   | Find silent error handlers that swallow exceptions                 |
 
 ## Installation
 
@@ -37,6 +38,7 @@ Once installed, Claude Code automatically uses skills when relevant. Just ask:
 - _"Help me understand this codebase"_ → triggers `codebase-onboarding`
 - _"Help me respond to this production incident"_ → triggers `incident-response-helper`
 - _"Find forgotten TODOs in this project"_ → triggers `stale-todo-finder`
+- _"Find empty catch blocks in my code"_ → triggers `empty-catch-finder`
 
 ## What are Claude Skills?
 
