@@ -4,6 +4,11 @@ description:
   Find empty catch blocks and silent error handlers that swallow exceptions.
   Use when user mentions silent failures, error swallowing, empty catch, ignored exceptions,
   or debugging mysterious production issues.
+allowed-tools:
+  - View
+  - Bash
+  - Read
+  - Grep
 ---
 
 # Empty Catch Block Finder

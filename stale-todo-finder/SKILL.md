@@ -4,6 +4,12 @@ description:
   Find and analyze stale TODO, FIXME, HACK comments in codebases using
   git history. Use when user mentions stale TODOs, old comments, tech debt cleanup,
   forgotten TODOs, or code archaeology.
+run-in-subagent: true
+allowed-tools:
+  - View
+  - Bash
+  - Read
+  - Grep
 ---
 
 # Stale TODO Finder
@@ -84,11 +90,12 @@ Report includes:
 
 ## Utility Scripts
 
-| Script                 | Purpose                  |
-| ---------------------- | ------------------------ |
-| `find_todos.py`        | Find all TODO comments   |
-| `analyze_staleness.py` | Git blame analysis       |
-| `generate_report.py`   | Generate markdown report |
+| Script                    | Purpose                          |
+| ------------------------- | -------------------------------- |
+| `find_todos.py`           | Find all TODO comments           |
+| `analyze_staleness.py`    | Git blame analysis               |
+| `generate_report.py`      | Generate markdown report         |
+| `generate_html_report.py` | Generate interactive HTML report |
 
 ---
 

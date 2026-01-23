@@ -3,6 +3,12 @@ name: finding-orphan-files
 description:
   Identify source files that are never imported or referenced (orphan files) to help clean up technical debt and reduce build size.
   Use when user mentions dead code, unused files, cleaning up codebase, or dependency audit.
+run-in-subagent: true
+allowed-tools:
+  - View
+  - Bash
+  - Read
+  - Grep
 ---
 
 # Orphan File Finder
